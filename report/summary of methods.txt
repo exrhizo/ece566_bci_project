@@ -1,0 +1,74 @@
+Decoding two-dimensional movement ECoG
+
+
+French -> Band-specific features improve finger flexion
+          Winners of BCI IV
+
+Source -> Decoding 2d movement trajectories with ECoG signals
+          They recording the data
+
+
+________________________________
+-Feature Extraction and Fitting-
+================================
+**********
+* Source *
+**********
+re-reference with Common Average Reference (CAR)
+convert time series ECoF into Freq. domain using autoregressive model - order 50
+spectral amplitudes into 1 Hz Bins
+Correlation-based Feature Selector (CFS) in Weka -> 5-20 features
+fit linear model for x, y, dx, dy
+Also looked at cosine tuning
+
+**********
+* French *
+**********
+Band decompisition
+Sub bands               (1-60 Hz)
+Gamma band              (60-100 Hz)
+Fast gamma band         (100-300 Hz) actually only up to 200
+Ensemble depolarization (300-6000 Hz) not used for this study
+
+Sanchez proposes band-specific AM
+Time bins 25ms of sum of band specific power
+  power from equiripple finite impulse response FIR
+Feature selection by train and validation
+fit linear model using Wiener solution
+
+
+__________
+-Data Set-
+==========
+
+
+________________________________
+-BCI Comp IV data set 5 Results-
+================================
+1. Nanying Liang, Cortex Team, Research Centre INRIA, France
+with Laurent Bougrain
+Features: Amplitudes in 1-60Hz, 60-100Hz, and 100-200Hz band; pair-wise feature selection
+Classification:Linear regression using Wiener solution and 25 tap delays. 
+
+2. Remi Flamary, LITIS INSA de Rouen, France
+with Alain Rakotomamonjy
+Preprocessing:Downsampling by a factor of 4.Features: Savitsky-Golay filter (0.4 s , 3rd order) and AR coefficients on a moving window of 300 points.
+Classification: Ridge regression and sparse linear regression.
+
+3. Mathew Salvaris, University of Essex, Colchester, UK
+Preprocessing:Common Average Reference, downsampling to 500 Hz.Features:Bandpower calculated using wavelet packets, and average of time series. CFS/Weka feature selector.
+Classification:SVR/LibSVM.
+
+4. Florin Popescu, Fraunhofer First, Germany
+Not described 
+
+5. Hyunjin Yoon, University of Southern California, Los Angeles, USA
+with Cyrus Shahabi
+Preprocessing:Rejection of bad channels, Common Average ReferenceFeatures:AR coefficients (order 2); time-domain moving average of 0-3Hz bandpass; PSD (2Hz resolution) of 8-32 Hz bandpass
+Classification:DAGSVM. 
+
+
+_______
+-Links-
+=======
+https://github.com/rasmusbergpalm/DeepLearnToolbox
