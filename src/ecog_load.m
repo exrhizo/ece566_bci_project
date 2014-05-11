@@ -4,8 +4,8 @@ load('../data/sub1_comp.mat');
 %load('../data/sub1_testlabels.mat');
 clear test_data
 
-train_data = train_data(1:10000,:);
-train_dg = train_dg(1:10000,:);
+% train_data = train_data(1:10000,:);
+% train_dg = train_dg(1:10000,:);
 
 %Subtract Channel means to remove dc bias
 train_data_means = mean(train_data);

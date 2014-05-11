@@ -85,3 +85,6 @@ for ii = [1 2 4]
     correlation = corr(expected_dg, test_dg(:, ii));
     disp(['Testing data correlation: ' num2str(correlation)])
 end
+
+%corr(mean(test_dg(:, 1)).*ones(size(test_dg,1),1), test_dg(:, 1))
+%correlation with a flat line is basically 0
