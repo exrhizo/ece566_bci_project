@@ -69,7 +69,9 @@ for ii = [1 2 4]
     disp(['Training data correlation: ' num2str(correlation)])
 
     test_features = ones(floor(num_test_points/40), num_selected_features+1);
-    test_features(:, 1:num_selected_features) = psdFeature(test_data(:, selected_channels), bins, delays);
+    delay_per_channel = repmat(delays, num_bins, 1);
+    test_features(:, 1:num_selected_features) = firFeature(test_data(:, selected_channels), bins, delay_per_channel(:));
+    %test_features(:, 1:num_selected_features) = psdFeature(test_data(:, selected_channels), bins, delays);
     expected_dg = test_features*b;
 
     figure
