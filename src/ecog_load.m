@@ -1,8 +1,9 @@
+%Load all the data
 clear all
 close all
 load('../data/sub1_comp.mat');
 %load('../data/sub1_testlabels.mat');
-clear test_data
+clear test_data % for speed we will just split up the training data
 
 % train_data = train_data(1:10000,:);
 % train_dg = train_dg(1:10000,:);
@@ -19,6 +20,7 @@ temp_a = train_data;
 temp_b = train_dg;
 
 
+%Split the data into training and testing
 train_data = temp_a(1:num_train_points, :);
 train_dg = temp_b(1:40:num_train_points, :);
 test_data = temp_a(num_train_points+1:end, :);

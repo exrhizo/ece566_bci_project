@@ -1,3 +1,5 @@
+%Script for comparing different frequency bands
+%using Welch's PSD for features
 tic
 disp('load')
 ecog_load;

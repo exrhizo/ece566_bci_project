@@ -9,7 +9,7 @@ function features = firFeature(data, bins, delays)
 % data    Matrix with each row an observation and each column a seperate channel.
 % bins    Each row is a bin for summerizing the PSD, first column is start
 %             second column is the end. In units of frequency.
-% delays   Each element of this vector matches with a channel of the data
+% delays   Each element of this vector matches with a feature of the data
 %             signal, and represents a delays in milliseconds.
 %
 % OUTPUTS
