@@ -1,0 +1,895 @@
+#LyX 2.0 created this file. For more info see http://www.lyx.org/
+\lyxformat 413
+\begin_document
+\begin_header
+\textclass article
+\use_default_options true
+\maintain_unincluded_children false
+\language english
+\language_package default
+\inputencoding auto
+\fontencoding global
+\font_roman default
+\font_sans default
+\font_typewriter default
+\font_default_family default
+\use_non_tex_fonts false
+\font_sc false
+\font_osf false
+\font_sf_scale 100
+\font_tt_scale 100
+
+\graphics default
+\default_output_format default
+\output_sync 0
+\bibtex_command default
+\index_command default
+\paperfontsize default
+\use_hyperref false
+\papersize default
+\use_geometry false
+\use_amsmath 1
+\use_esint 1
+\use_mhchem 1
+\use_mathdots 1
+\cite_engine basic
+\use_bibtopic false
+\use_indices false
+\paperorientation portrait
+\suppress_date false
+\use_refstyle 1
+\index Index
+\shortcut idx
+\color #008000
+\end_index
+\secnumdepth 3
+\tocdepth 3
+\paragraph_separation indent
+\paragraph_indentation default
+\quotes_language english
+\papercolumns 1
+\papersides 1
+\paperpagestyle default
+\tracking_changes false
+\output_changes false
+\html_math_output 0
+\html_css_as_file 0
+\html_be_strict false
+\end_header
+
+\begin_body
+
+\begin_layout Title
+Classification for Brain Computer Interfaces
+\end_layout
+
+\begin_layout Author
+Alex Warren
+\begin_inset Newline newline
+\end_inset
+
+Frank Holler
+\end_layout
+
+\begin_layout Date
+05/11/2014
+\end_layout
+
+\begin_layout Standard
+\begin_inset VSpace bigskip
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset VSpace bigskip
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\align center
+ECE 466/566 
+\end_layout
+
+\begin_layout Standard
+\align center
+Professor Marefat
+\end_layout
+
+\begin_layout Standard
+\align center
+Knowledge Representation Systems 
+\end_layout
+
+\begin_layout Standard
+\align center
+Term Project 
+\end_layout
+
+\begin_layout Standard
+\begin_inset Newpage newpage
+\end_inset
+
+
+\end_layout
+
+\begin_layout Abstract
+The advancements in Brain Computer Interface (BCI) open up the promise of
+ locomotion to individuals who have lost either movement through disease
+ or injury.
+ As this technology becomes more advanced, it will allow users an unprecedented
+ level of control of electronic devices.
+ This paper explores the acquisition of Electrocorticographic (ECoG) signals
+ and the techniques for mapping them to movement.
+ Particularly looking at the BCI Competition IV dataset 5, where finger
+ position is predicted from ECoG signals.
+ A comparison of machine learning techniques is made, with analysis of the
+ winner’s methods.
+\end_layout
+
+\begin_layout Section
+Introduction
+\end_layout
+
+\begin_layout Subsection
+Brain Computer Interface
+\end_layout
+
+\begin_layout Standard
+Electroencephalography (EEG) is commonly known for its use in measuring
+ brain waves.
+ By placing electrodes on the surface of the head, it is possible to detect
+ the agregate activity of neurons as they fire electrochemical pulses in
+ the cortex.
+ Because the skull acts to insulate and diffuse the electrical activity
+ of the brain, EEG has issues with a low signal to noise ratio.
+ It is further limited to measuring the activity of neurons that send pulses
+ perpendicular to the surface of the scalp.
+ Despite this issues, it is still possible to infer brain states from the
+ frequency and phase relationships of the electrodes.
+\end_layout
+
+\begin_layout Standard
+Alternatively it is possible to place electrodes directly into the brain
+ and get readings from individual or small groups of neurons.
+ This has been done in animal models, but overtime as the electrodes move,
+ scar tissue will build up and the system will become unreliable.
+ ECoG occupies a middle ground between the limited information content of
+ EEG and the biomaterial challenges of buried electrodes.
+ The electrodes are placed directly on the surface of the cortex where it
+ is possible to get a strong signal and good spatial resolution.
+ This can be used for finding the source of epileptic fits and while the
+ array of electrodes are present BCI the patients participate in BCI experiments.
+\end_layout
+
+\begin_layout Standard
+BCI has many potential applications.
+ EEG is well known for measuring the brain waves associated with sleep and
+ wakefulness.
+ It has traditionally been used in medicine and neuroscience but is also
+ being used commercially.
+ EEG can be used to improve marketing campaigns, architectural design, in
+ artistic pieces, and even improve the mindset of athletes.
+ ECoG has all the applications of EEG but does require brain surgery, therefore
+ in the near term its use will be limited to individuals with damaged nervous
+ systems and missing limbs.
+ 
+\end_layout
+
+\begin_layout Subsection
+BCI Tools
+\end_layout
+
+\begin_layout Standard
+Given that access to EEG technology and good practice with EEG technology
+ was neither the goal of this project nor a viable option, two programs
+ were used to simulate EEG tests and signals.
+ The two programs used are BCI2000 and bcilab.
+ Both programs work with Matlab for signal processing.
+ Bcilab is a Matlab toolbox.
+ The idea behind it is that EEG data can be processed using this program
+ in matlab.
+ It was intended to help facilitate research into BCI.
+ BCILAB 
+\begin_inset CommandInset citation
+LatexCommand cite
+key "delorme2011eeglab"
+
+\end_inset
+
+works by essentially receiving stimulus from a user and predicting what
+ the user is thinking.
+\end_layout
+
+\begin_layout Standard
+BCI2000 
+\begin_inset CommandInset citation
+LatexCommand cite
+key "schalk2004bci2000"
+
+\end_inset
+
+was another program that was intended to create an interface with the human
+ brain.
+ Since, we had no access to EEG technology, simulations were used in BCI2000.
+ In the simulation, there is a ball and a rectangle on opposite sides of
+ the screen.
+ The objective of the test is supposed to be that a person connected to
+ the BCI through an EEG rig tries to make the ball move to and make contact
+ with the rectangle.
+ Each run simulated 18 different trials, some trials were successful, others
+ failed.
+ At the the end of each run, a complete log of the number of failed and
+ successful attempts is shown along with the number of transferred bits.
+\end_layout
+
+\begin_layout Subsection
+Acquisition of Signals
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+wide false
+sideways false
+status collapsed
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Graphics
+	filename images/setup.jpg
+	width 50col%
+
+\end_inset
+
+
+\begin_inset Caption
+
+\begin_layout Plain Layout
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:Experimental-setup-."
+
+\end_inset
+
+Experimental setup 
+\begin_inset CommandInset citation
+LatexCommand cite
+key "wang2013deep"
+
+\end_inset
+
+.
+ 
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Typical acquisition of signals is done through a direct connection to a
+ persons brain with ECoG 
+\begin_inset CommandInset citation
+LatexCommand cite
+key "schalk2007decoding"
+
+\end_inset
+
+ as seen in 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:Experimental-setup-."
+
+\end_inset
+
+.
+ The ECoG, working through an array of electrical potential sensors, records
+ different outputs at each sensor in a matrix.
+ Subjects connected to the ECoG rig perform a simple movement(for the competitio
+n they were instructed to flex a particular finger).
+ The movement is supposed to last a specific amount and then the subject
+ is supposed to rest for a period of time.
+ This allows the BCI to distinguish between different signals.
+ It takes a number of trials for the BCI to be trained so that it can distinguis
+h the test movement from the other signals picked by the ECoG.
+ After the BCI has been trained, testing can begin to determine if it can
+ match the same movement from the subject.
+ The signals were recorded at 1kHz with a bandpass filter from .15 to 200Hz
+ using the BCI2000 software.
+ The dataglove was recorded at 25Hz.
+ 400 seconds of data was given to competition participants.
+ 
+\end_layout
+
+\begin_layout Subsection
+Machine Learning
+\end_layout
+
+\begin_layout Standard
+Machine learning is a broad set of techniques used for interpreting and
+ modeling data.
+ To create a model that will map ECoG data to finger capture data, the general
+ workflow is to start with the raw signal and convert it to a time varying
+ feature vector.
+ This step should reduce the dimensionality of the data, to speed up the
+ next step.
+ Often the goal after creating a feature vector would be to classify the
+ data.
+ In this case we will use linear regression to map the feature to the digit
+ positions.
+ The standard way to validate that a machine learning technique has been
+ successful is to break the data into a training set and a testing set,
+ so that the model tested on data that it was not fitted to.
+ 
+\end_layout
+
+\begin_layout Section
+Proir Work
+\end_layout
+
+\begin_layout Standard
+Five winners were chosen that had the best correlation when their model
+ was applied to the test with unknown digit positions.
+ In the implementation we present, our methods are based on the winners,
+ the Cortex Team 
+\begin_inset CommandInset citation
+LatexCommand cite
+key "bougrain2009band"
+
+\end_inset
+
+.
+ They based their methods on the theory that the cortex uses a form of amplitude
+ modulation to encode information, and to extract useful features they used
+ a equiripple Finite Impulse Response (FIR) band pass filter separate the
+ signals into bins of 1-60Hz, 60-100Hz and 100-200Hz and then they computed
+ the power of the signal over 40ms windows.
+ The original signal was sampled at 1kHz and the data glove was sampled
+ at 25Hz, so by combining 40 samples of the ECoG data, the two signals had
+ matching time steps.
+ Finally having created three feature vectors for each channel, they used
+ a stepwise feature selection process, to additively create a set of features
+ to perform linear regression on.
+ They searched for the best feature to add and continued until the correlation
+ on test was not longer increasing or until a threshold of cycles was reached.
+ To find the regression, they used the Wiener model.
+\end_layout
+
+\begin_layout Standard
+The other winners used various methods.
+ For creating features, Auto Regression coefficients on a moving window,
+ band power from Wavelets, Power Spectrum Density and time-domain average
+ of low frequency bandpass.
+ To create a model they used, Ridge Regression, Sparse Linear Regression,
+ Support Vector Regression, and a Directed Acyclic Graph-Support Vector
+ Machine.
+ 
+\end_layout
+
+\begin_layout Section
+Methods
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\begin_inset Graphics
+	filename images/bin_v1_test_digit_1.jpg
+	width 100col%
+
+\end_inset
+
+
+\begin_inset Caption
+
+\begin_layout Plain Layout
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:Comparison-of-predicted"
+
+\end_inset
+
+Comparison of predicted thumb position and actual thumb position.
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\begin_inset Graphics
+	filename images/ecog_spectra.jpg
+	width 100col%
+
+\end_inset
+
+
+\begin_inset Caption
+
+\begin_layout Plain Layout
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:Spectra-for-one"
+
+\end_inset
+
+Spectra for one window at each of the 62 channels of ECoG data from Patient
+ 1.
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+For this paper we decided to attempt and reproduce the results of the Cortex
+ Team.
+ The scripts were created in MATLAB and took advantage of it’s libraries.
+ The first task was to create feature vectors from the ECoG channels, we
+ used two separate methods for this.
+ In the first method we used Welch’s power spectrum density estimate and
+ summed the density over different bins, the ones they used and also alternative
+s.
+ Welch’s method uses FFT over subintervals and calculates an average, the
+ resulting data for one frame can be seen in 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:Spectra-for-one"
+
+\end_inset
+
+.
+ Calculating this for all the data points was time consuming.
+ The other method was faster and based off of their methods, to use a filter
+ to seperate the channels into band limited signals and then to find the
+ power of each as the sum of squares.
+\end_layout
+
+\begin_layout Standard
+Next, having created multiple feature vectors per channel, the task was
+ to prune the number of features to be used in the final regression.
+ This was done by finding a regression of each feature vector with the finger
+ position and creating a list of those features with the best R^2 value.
+ The top features were then combined for a final regression to determine
+ the coefficients for each feature vector.
+ After this it is possible to predict the finger position with the test
+ data and compare the results to the actual finger position.
+\end_layout
+
+\begin_layout Standard
+An additional issue when determining the best features to use, was also
+ to find the appropriate delay to use.
+ The data glove data was recorded with a delay of 37ms and the brain itself
+ is active before the finger is moved.
+ An estimate of appropriate delays can be gathered from 
+\begin_inset CommandInset citation
+LatexCommand cite
+key "wang2009predicting"
+
+\end_inset
+
+ where the experimenters were attempting to predict movement direction.
+ The study found that features varied between subjects with the time delay
+ ranging from 180 to 510 ms.
+ This was incorporated into our work by finding the best performing delay
+ for each feature.
+ 
+\end_layout
+
+\begin_layout Section
+Results 
+\end_layout
+
+\begin_layout Standard
+The winning entry performed ith a correlation of .46 on the training data.
+ The implementation that we put together was at best able to perform with
+ a correlation of .4 as can be seen in table 1.
+ However the remaining fingers were not included because the results were
+ poor, and to save computation time.
+ A more comprehensive comparison would require that the method be applied
+ to the other two subjects (there were 3 sets of data from different patients).
+ The predicted finger position can be seen in 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:Comparison-of-predicted"
+
+\end_inset
+
+.
+ 
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float table
+wide false
+sideways false
+status collapsed
+
+\begin_layout Plain Layout
+\begin_inset Tabular
+<lyxtabular version="3" rows="4" columns="6">
+<features tabularvalignment="middle">
+<column alignment="center" valignment="top" width="0">
+<column alignment="center" valignment="top" width="0">
+<column alignment="center" valignment="top" width="0">
+<column alignment="center" valignment="top" width="0">
+<column alignment="center" valignment="top" width="0">
+<column alignment="center" valignment="top" width="0">
+<row>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+PSD a
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+PSD b
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+PSD c
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+FIR original
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+FIR seperate
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Thumb
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+0.40183
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+0.39985
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+0.41795
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+0.31557
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+0.32756
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Index
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+0.346
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+0.32221
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+0.32463
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+0.22753
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+0.20718
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Ring
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+0.3461
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+0.34194
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+0.3501
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+0.32231
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+0.31873
+\end_layout
+
+\end_inset
+</cell>
+</row>
+</lyxtabular>
+
+\end_inset
+
+
+\begin_inset Caption
+
+\begin_layout Plain Layout
+Correlation of different configurations.
+ PSD versions used different bins.
+ a) 1-60 60-100 and 100-200Hz b) 1-30 30-90 90-120 120-230Hz c) 1-25 25-50
+ 50-100 100-230Hz.
+ For the Finite Impulse Response, the original feature selection was to
+ choose features by channel and the seperate method selected feature by
+ feature so that channels wouldn't need to go together.
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Comparing the different configurations, we find that the bins used in the
+ third Power Spectrum Density feature create the best results, however to
+ be thorough it would be necessary to compare the methods on each subject
+ and with the full range of data including each finger.
+ 
+\end_layout
+
+\begin_layout Section
+Discussion
+\end_layout
+
+\begin_layout Standard
+It is an interesting theoretical question what the best performance that
+ could be achieved with this data would be.
+ It is worth noting that the electrodes are placed differently on each subject
+ and that the recording will be including signals that are unrelated to
+ the finger movements.
+ In each case, electrodes were positioned over the parietal cortex, which
+ is associated with motor control, however neuroscience is not at the point
+ where it can solve the inverse problem of determining what signals are
+ corresponding to in regard to neural processing.
+ 
+\end_layout
+
+\begin_layout Standard
+The winning solution obviously performed better than our implementation
+ and in further work it would be interesting to determine what changes could
+ be made to approach that level of correlation across all the data sets.
+ One potential source of difference is in the FIR filter that is used, they
+ did not specify the parameters and these were chosen without testing different
+ possibilities.
+ One interesting direction of further research would be to add meta-learning
+ to the program so that various parameters could be optimized.
+\end_layout
+
+\begin_layout Standard
+Finally other research has shown that unsupervised learning may be useful
+ in the creation of features.
+ In one paper 
+\begin_inset CommandInset citation
+LatexCommand cite
+key "wang2013deep"
+
+\end_inset
+
+ they compared the Band power features to a method based on prior supervised
+ convolutional stacked auto-encoders.
+ However this method is much more complex.
+ 
+\end_layout
+
+\begin_layout Section
+Bibliography
+\end_layout
+
+\begin_layout Standard
+\begin_inset CommandInset bibtex
+LatexCommand bibtex
+bibfiles "references/cited_papers"
+options "plain"
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Section
+Appendix
+\end_layout
+
+\begin_layout Standard
+\begin_inset External
+	template PDFPages
+	filename code.pdf
+	lyxscale 90
+	extra LaTeX "pages=-"
+
+\end_inset
+
+
+\end_layout
+
+\end_body
+\end_document
